@@ -1,2 +1,5 @@
 chat_logs
 results*.csv
+*.log
+__pycache__
+.vscode

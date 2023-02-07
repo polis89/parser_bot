@@ -1,26 +1,39 @@
 import os
 import logging
-from telegram import Update
+import asyncio
+import telegram
+# from telegram import Update
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
+from rammstein import getTickets
+from random import randint
+from time import sleep
 
 logging.basicConfig(
-    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
-    level=logging.INFO,
-    filename="chat_logs"
+	format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+	level=logging.INFO,
+	filename="chat_logs"
 )
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logging.info('/start request')
-    await context.bot.send_message(chat_id=update.effective_chat.id, text="I'm a bot, please talk to me!")
+# async def subscribe(update: Update, context: ContextTypes.DEFAULT_TYPE):
+# 	logging.info(f"/subscribe user: {context._chat_id}")
+# 	await context.bot.send_message(chat_id=update.effective_chat.id, text="SUBSCRIBED!")
 
-if __name__ == '__main__':
-    if os.environ.get('TOKEN') == None:
-        print('Please specify the TOKEN')
-        exit()
-    token = os.environ.get('TOKEN')
-    application = ApplicationBuilder().token(token).build()
-    
-    start_handler = CommandHandler('start', start)
-    application.add_handler(start_handler)
-    
-    application.run_polling()
+chat_id = os.environ.get('CHAT_ID')
+
+async def main():
+	if os.environ.get('TOKEN') == None:
+		print('Please specify the TOKEN')
+		exit()
+	token = os.environ.get('TOKEN')
+	bot = telegram.Bot(token=token)
+	# application = ApplicationBuilder().token(token).build()
+
+	async def send_msgs_to_client(messages):
+		for msg in messages:
+			await bot.send_message(chat_id=chat_id, text=msg)
+
+	while True:
+		await getTickets(send_msgs_to_client)
+		sleep(randint(60*5,60*10))
+
+asyncio.run(main())
