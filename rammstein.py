@@ -29,7 +29,9 @@ class Ad:
 async def getTickets(callbackFn = None):
 	options = Options()
 	options.add_argument("--headless")
+	print("before install firefox")
 	driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()), options=options)
+	print("after install firefox")
 
 	urls = [
 		"https://www.fansale.at/fansale/tickets/hard-n-heavy/rammstein/502060/15791533",

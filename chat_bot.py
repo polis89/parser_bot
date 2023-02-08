@@ -18,13 +18,14 @@ logging.basicConfig(
 # 	logging.info(f"/subscribe user: {context._chat_id}")
 # 	await context.bot.send_message(chat_id=update.effective_chat.id, text="SUBSCRIBED!")
 
-chat_id = os.environ.get('CHAT_ID')
+chat_id = os.environ.get('TELEGRAM_BOT_CHAT_ID')
 
 async def main():
-	if os.environ.get('TOKEN') == None:
+	print("STARTING BOT")
+	if os.environ.get('TELEGRAM_BOT_TOKEN') == None:
 		print('Please specify the TOKEN')
 		exit()
-	token = os.environ.get('TOKEN')
+	token = os.environ.get('TELEGRAM_BOT_TOKEN')
 	bot = telegram.Bot(token=token)
 	# application = ApplicationBuilder().token(token).build()
 
