@@ -7,6 +7,7 @@ import telegram
 from telegram.ext import ApplicationBuilder, ContextTypes, CommandHandler
 from rammstein import getTickets
 from reverb import getListings
+from reverb_alt import getReverbFeed
 from wh import getWhListings
 from random import randint
 from time import sleep
@@ -37,18 +38,25 @@ async def main():
 
 	async def send_msgs_to_client(messages):
 		for msg in messages:
-			await bot.send_message(chat_id=chat_id, text=msg)
+			sleep(randint(300,1000)/1000)
+			try:
+				await bot.send_message(chat_id=chat_id, text=msg)
+			except BaseException as e:
+				print("Error sending msg to Telegram")
+				print(e)
+				continue
 		
-	start_reverb = True
+	start_reverb = 2
 
 	while True:
 		# await getTickets(send_msgs_to_client)
-		if start_reverb:
-			await getListings(send_msgs_to_client)
-			start_reverb = False
-		else:
-			start_reverb = True
 		await getWhListings(send_msgs_to_client)
+		await getReverbFeed(send_msgs_to_client)
+		# if start_reverb == 0:
+		# 	await getListings(send_msgs_to_client)
+		# 	start_reverb = 2
+		# else:
+		# 	start_reverb = start_reverb - 1
 		sleep(randint(60*5,60*10))
 
 asyncio.run(main())

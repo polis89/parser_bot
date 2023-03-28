@@ -10,6 +10,28 @@ import hashlib
 import types
 import logging
 import time
+import locale
+
+locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
+
+max_price = 1800
+blacklisted_keywords = list(map(str.lower, [
+	"Gitarrengurte", "Tremolo Abdeckung","Gitarrengurt", "Gitarren Gurt", "Leergehäuse", "Gitarrenhalter", "Akustikverstärker", "Precision Bass", "Schlagbrett", "Plektrum", "Fußschalter",
+	"augustine", "gitarrenplektren", "e-gitarrensaiten", "gitarrenständer", "4x12", "Peavey Envoy", "Stagg", "Talkbox", "WASHBURN", "EL 84", "12 AX7", "E Gitarren Saiten", "HarleyBenton",
+	"LEDERGITARRENGURT", "Warehouse", "EL34", "ECC83", "Samick", "ROCKTILE", "Vypyr", "MG30FX", "RP350", "Dimavery", "MG30CFX", "Wandhalterung", "DanElectro", "Pedaltrain", "Jensen", "Vyphyr", "Chevy ",
+	"AVT100", "Voodoo Lab", "EastCoast", "Hohner", "Leyanda", "zoom", "G212", "Bugera", "MG30R", "FM65DSP", "Morley", "Neutrik", "Ibanez GIO", "Harley Benton", "Tenson", "Kotec", "Triplex",
+	"Cap Kondensator", "Crate", "Henriksen", "MG30GFX", "MG101GFX", "Marshall MG", "Dean", "Warlock", "Schertler", "Cigar Box", "Carlsbro", "Troubadour", "Gitarrensaiten", "VGS ", "Poti-Knöpfe",
+	"Greg Bennet", "PEAVEY RAPTOR", "PEAVEY RAGE", "Jolana"
+]))
+
+def filterParsedListing(listing):
+	if listing.get("price_num", 0) > max_price:
+		return False
+	if any(word in listing.get("title", "").lower() for word in blacklisted_keywords):
+		print(f"- Filter out: {listing.get('title', '')}")
+		return False
+	return True
+
 
 def filterDummyListings(listing):
 	if listing.find("a") == None or listing.find("h3") == None:
@@ -20,12 +42,32 @@ def filterDummyListings(listing):
 		return False
 	return True
 
-def format_listing(listing):
+def extractListingData(listing):
+	id = listing.find("div").get("id")
 	url = "https://www.willhaben.at" + listing.find("a").get("href")
 	title = listing.find("h3").string
 	price = listing.find("h3").findNextSibling().select("span[aria-label]")[0].text
 	desc = listing.find("h3").findNextSibling().select("span[aria-hidden]")[0].text
-	return f"Title: {title}.\nPrice: {price} nEuro\nDesc: {desc}\nURL: {url}"
+	if price.split(" ")[0] == "€":
+		price_num = locale.atoi(price.split(" ")[1].replace(".",","))
+	else:
+		price_num = 0
+	return dict({
+		"id": id,
+		"url": url,
+		"title": title,
+		"price": price,
+		"desc": desc,
+		"price_num": price_num
+	})
+
+def format_listing(listing):
+	url = listing.get("url", "no url")
+	title = listing.get("title", "no title")
+	price = listing.get("price", "no price")
+	desc = listing.get("desc", "no desc")
+	return f"Title: {title}.\nPrice: {price}\nDesc: {desc}\nURL: {url}"	
+		
 
 async def getWhListings(callbackFn = None):
 	print("start parsing willhaben")
@@ -58,9 +100,13 @@ async def getWhListings(callbackFn = None):
 			ids = [line.rstrip() for line in file]
 			# print("old_ids", ids)
 			new_listings = list(filter(lambda l: str(l.find("div").get("id")) not in ids, listings))
-			print(f"Found {len(new_listings)} new listings")
+			new_listings = list(map(extractListingData, new_listings))
+			new_listings = list(filter(filterParsedListing, new_listings))
 			for listing in new_listings:
-				file.write(f'{listing.find("div").get("id")}\n')
+				file.write(f'{listing.get("id")}\n')
+			print(f"Found {len(new_listings)} new listings")
+			if len(new_listings) > 0:
+				new_listings.reverse()
 			if isinstance(callbackFn, types.FunctionType):
 				await callbackFn(map(lambda l: format_listing(l), new_listings))
 

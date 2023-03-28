@@ -18,14 +18,19 @@ def build_url(base_url, path, args_dict):
     return urllib.parse.urlunparse(url_parts)
 
 def format_listing(listing):
-	return f"Title: {listing['title']}.\nPrice: {listing['price']['amount']}{listing['price']['symbol']}\nURL: {listing['_links']['web']['href']}"
+	return f"=== REVERB ===\nTitle: {listing['title']}.\nPrice: {listing['price']['amount']}{listing['price']['symbol']}\nURL: {listing['_links']['web']['href']}"
 
 async def getListings(callbackFn = None):
 	logging.info("Get following items")
 	url = build_url('https://api.reverb.com', 'api/my/follows', {})
 
 	response = requests.get(url, headers={"Authorization": f"Bearer {reverb_token}"})
-	response_data = response.json()
+	try:
+		response_data = response.json()
+	except BaseException as e:
+		print("Error fetching reverb following searches")
+		print(e)
+		return
 	topics = response_data["follows"]
 
 	logging.info("Start parsing Reverb")
@@ -59,10 +64,22 @@ async def getListings(callbackFn = None):
 
 		for url in urls:
 			logging.info(f"Get url: {url}")
-			response = requests.get(url)
-			response_data = response.json()
+			try:
+				response = requests.get(url)
+				response_data = response.json()
+			except BaseException as e:
+				print("Error fetching reverb api")
+				print(e)
+				continue
 
-			parsed_ids = list(map(lambda l: l["id"], response_data["listings"]))
+			try:
+				parsed_ids = list(map(lambda l: l["id"], response_data["listings"]))
+			except BaseException as e:
+				print("Error parsing reverb response")
+				print(response_data)
+				print(e)
+				print("--- end error ---")
+				continue
 			print("parsed_ids", parsed_ids)
 		
 			# results_filename = "results-" + hashlib.md5(url.encode()).hexdigest() + ".csv"
@@ -81,6 +98,6 @@ async def getListings(callbackFn = None):
 				if isinstance(callbackFn, types.FunctionType):
 					await callbackFn(map(lambda l: format_listing(l), new_listings))
 
-			sleep(randint(1,5))
+			sleep(randint(500,1000)/1000)
 
 	logging.info("End parsing Reverb")
