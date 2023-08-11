@@ -91,7 +91,7 @@ async def getListings(callbackFn = None):
 			with open(results_filename, "r+") as file:
 				ids = [line.rstrip() for line in file]
 				# print("old_ids", ids)
-				new_listings = list(filter(lambda l: str(l["id"]) not in ids, response_data["listings"]))
+				new_listings = list(filter(lambda l: str(l["id"]) not in ids and str(l["condition_slug"] != "brand-new"), response_data["listings"]))
 				logging.info(f"Found {len(new_listings)} new listings")
 				for listing in new_listings:
 					file.write(f'{listing["id"]}\n')

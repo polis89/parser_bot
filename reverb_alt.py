@@ -41,7 +41,7 @@ async def getReverbFeed(callbackFn = None):
 		ids = [line.rstrip() for line in file]
 		# print("old_ids", ids)
 		try:
-			new_listings = list(filter(lambda l: l["inventory"] > 0 and str(l["listing_currency"]) != "JPY" and str(l["id"]) not in ids, response_data["listings"]))
+			new_listings = list(filter(lambda l: l["inventory"] > 0 and str(l["listing_currency"]) == "EUR" and str(l["condition_slug"] != "brand-new") and str(l["id"]) not in ids, response_data["listings"]))
 		except BaseException as e:
 			print("Error parsing reverb response")
 			print(response_data)

@@ -21,7 +21,7 @@ blacklisted_keywords = list(map(str.lower, [
 	"LEDERGITARRENGURT", "Warehouse", "EL34", "ECC83", "Samick", "ROCKTILE", "Vypyr", "MG30FX", "RP350", "Dimavery", "MG30CFX", "Wandhalterung", "DanElectro", "Pedaltrain", "Jensen", "Vyphyr", "Chevy ",
 	"AVT100", "Voodoo Lab", "EastCoast", "Hohner", "Leyanda", "zoom", "G212", "Bugera", "MG30R", "FM65DSP", "Morley", "Neutrik", "Ibanez GIO", "Harley Benton", "Tenson", "Kotec", "Triplex",
 	"Cap Kondensator", "Crate", "Henriksen", "MG30GFX", "MG101GFX", "Marshall MG", "Dean", "Warlock", "Schertler", "Cigar Box", "Carlsbro", "Troubadour", "Gitarrensaiten", "VGS ", "Poti-Knöpfe",
-	"Greg Bennet", "PEAVEY RAPTOR", "PEAVEY RAGE", "Jolana"
+	"Greg Bennet", "PEAVEY RAPTOR", "PEAVEY RAGE", "Jolana", "Pickguard Strat"
 ]))
 
 def filterParsedListing(listing):
@@ -66,7 +66,7 @@ def format_listing(listing):
 	title = listing.get("title", "no title")
 	price = listing.get("price", "no price")
 	desc = listing.get("desc", "no desc")
-	return f"Title: {title}.\nPrice: {price}\nDesc: {desc}\nURL: {url}"	
+	return f"Title: {title}.\n**Price: {price}**\nDesc: {desc}\nURL: {url}"	
 		
 
 async def getWhListings(callbackFn = None):
@@ -91,7 +91,12 @@ async def getWhListings(callbackFn = None):
 		time.sleep(2)
 		content = driver.page_source
 		soup = BeautifulSoup(content)
-		listings = list(filter(filterDummyListings, soup.find(id="skip-to-resultlist").contents))
+		try:
+			listings = list(filter(filterDummyListings, soup.find(id="skip-to-resultlist").contents))
+		except BaseException as e:
+			print("Error getting skip-to-resultlist id")
+			print(e)
+			continue
 
 		with open(results_filename, 'a+') as csvfile:
 			pass

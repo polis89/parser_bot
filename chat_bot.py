@@ -49,14 +49,19 @@ async def main():
 	start_reverb = 2
 
 	while True:
-		# await getTickets(send_msgs_to_client)
-		await getWhListings(send_msgs_to_client)
+		# try:
+		# 	await getTickets(send_msgs_to_client)
+		# except BaseException as e:
+		# 	print("Error parsing tickets")
+		# 	print(e)
+		# 	continue
+		try:
+			await getWhListings(send_msgs_to_client)
+		except BaseException as e:
+			print("Error parsing wh")
+			print(e)
+			continue
 		await getReverbFeed(send_msgs_to_client)
-		# if start_reverb == 0:
-		# 	await getListings(send_msgs_to_client)
-		# 	start_reverb = 2
-		# else:
-		# 	start_reverb = start_reverb - 1
 		sleep(randint(60*5,60*10))
 
 asyncio.run(main())
