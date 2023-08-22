@@ -20,8 +20,8 @@ blacklisted_keywords = list(map(str.lower, [
 	"augustine", "gitarrenplektren", "e-gitarrensaiten", "gitarrenständer", "4x12", "Peavey Envoy", "Stagg", "Talkbox", "WASHBURN", "EL 84", "12 AX7", "E Gitarren Saiten", "HarleyBenton",
 	"LEDERGITARRENGURT", "Warehouse", "EL34", "ECC83", "Samick", "ROCKTILE", "Vypyr", "MG30FX", "RP350", "Dimavery", "MG30CFX", "Wandhalterung", "DanElectro", "Pedaltrain", "Jensen", "Vyphyr", "Chevy ",
 	"AVT100", "Voodoo Lab", "EastCoast", "Hohner", "Leyanda", "zoom", "G212", "Bugera", "MG30R", "FM65DSP", "Morley", "Neutrik", "Ibanez GIO", "Harley Benton", "Tenson", "Kotec", "Triplex",
-	"Cap Kondensator", "Crate", "Henriksen", "MG30GFX", "MG101GFX", "Marshall MG", "Dean", "Warlock", "Schertler", "Cigar Box", "Carlsbro", "Troubadour", "Gitarrensaiten", "VGS ", "Poti-Knöpfe",
-	"Greg Bennet", "PEAVEY RAPTOR", "PEAVEY RAGE", "Jolana", "Pickguard Strat"
+	"Cap Kondensator", "Crate", "Henriksen", "MG30GFX", "MG101GFX", "Marshall MG", "Dean", "Warlock", "Schertler", "Cigar Box", "Carlsbro", "Troubadour", "Gitarrensaiten", "VGS ", "Poti-Knöpfe", "Telecaster Pickguard",
+	"Greg Bennet", "PEAVEY RAPTOR", "PEAVEY RAGE", "Jolana", "Pickguard Strat", "Lefthand", "String Trees", "String Tree", "PRS Style", "ibz1g", "ROCKTRON", "Stratocaster Pickguard", "Mustang Pickguard"
 ]))
 
 def filterParsedListing(listing):
@@ -69,13 +69,14 @@ def format_listing(listing):
 	return f"Title: {title}.\n**Price: {price}**\nDesc: {desc}\nURL: {url}"	
 		
 
-async def getWhListings(callbackFn = None):
+async def getWhListings(providedDriver = None, callbackFn = None):
 	print("start parsing willhaben")
-	options = Options()
-	options.add_argument("--headless")
-	print("before install firefox")
-	driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()), options=options)
-	print("after install firefox")
+	if providedDriver == None:
+		options = Options()
+		options.add_argument("--headless")
+		driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()), options=options)
+	else:
+		driver = providedDriver
 
 	urls = [
 		"https://www.willhaben.at/iad/kaufen-und-verkaufen/marktplatz/saiteninstrumente/e-gitarren-verstaerker-6551?rows=200&isNavigation=true"
@@ -117,6 +118,6 @@ async def getWhListings(callbackFn = None):
 
 		sleep(randint(3,6))
 
-
-	driver.close()
+	if providedDriver == None:
+		driver.close()
 	print("end parsing willhaben")

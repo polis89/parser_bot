@@ -26,16 +26,16 @@ class Ad:
 	def to_msg(self):
 		return f"New Ticket: Price: {self.price}. Desc: {self.description}"
 
-async def getTickets(callbackFn = None):
-	options = Options()
-	options.add_argument("--headless")
-	print("before install firefox")
-	driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()), options=options)
-	print("after install firefox")
+async def getTickets(providedDriver = None, callbackFn = None):
+	if providedDriver == None:
+		options = Options()
+		options.add_argument("--headless")
+		driver = webdriver.Firefox(service=Service(GeckoDriverManager().install()), options=options)
+	else:
+		driver = providedDriver
 
 	urls = [
-		"https://www.fansale.at/fansale/tickets/hard-n-heavy/rammstein/502060/15791533",
-		"https://www.fansale.at/fansale/tickets/hard-n-heavy/rammstein/502060/15690461"
+		"https://www.fansale.at/fansale/tickets/rock-pop/red-hot-chili-peppers/502062/16209003"
 	]
 
 	for url in urls:
@@ -76,5 +76,5 @@ async def getTickets(callbackFn = None):
 
 		sleep(randint(2,6))
 
-
-	driver.close()
+	if providedDriver == None:
+		driver.close()
