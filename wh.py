@@ -14,14 +14,17 @@ import locale
 
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
-max_price = 1800
+max_price = 2000
 blacklisted_keywords = list(map(str.lower, [
-	"Gitarrengurte", "Tremolo Abdeckung","Gitarrengurt", "Gitarren Gurt", "Leergehäuse", "Gitarrenhalter", "Akustikverstärker", "Precision Bass", "Schlagbrett", "Plektrum", "Fußschalter",
-	"augustine", "gitarrenplektren", "e-gitarrensaiten", "gitarrenständer", "4x12", "Peavey Envoy", "Stagg", "Talkbox", "WASHBURN", "EL 84", "12 AX7", "E Gitarren Saiten", "HarleyBenton",
-	"LEDERGITARRENGURT", "Warehouse", "EL34", "ECC83", "Samick", "ROCKTILE", "Vypyr", "MG30FX", "RP350", "Dimavery", "MG30CFX", "Wandhalterung", "DanElectro", "Pedaltrain", "Jensen", "Vyphyr", "Chevy ",
-	"AVT100", "Voodoo Lab", "EastCoast", "Hohner", "Leyanda", "zoom", "G212", "Bugera", "MG30R", "FM65DSP", "Morley", "Neutrik", "Ibanez GIO", "Harley Benton", "Tenson", "Kotec", "Triplex",
-	"Cap Kondensator", "Crate", "Henriksen", "MG30GFX", "MG101GFX", "Marshall MG", "Dean", "Warlock", "Schertler", "Cigar Box", "Carlsbro", "Troubadour", "Gitarrensaiten", "VGS ", "Poti-Knöpfe", "Telecaster Pickguard",
-	"Greg Bennet", "PEAVEY RAPTOR", "PEAVEY RAGE", "Jolana", "Pickguard Strat", "Lefthand", "String Trees", "String Tree", "PRS Style", "ibz1g", "ROCKTRON", "Stratocaster Pickguard", "Mustang Pickguard"
+	"Gitarrengurte", "Tremolo Abdeckung","Gitarrengurt", "Gitarren Gurt", "Leergehäuse", "Gitarrenhalter", "Akustikverstärker", "Precision Bass", "Schlagbrett", "Plektrum", "Fußschalter", "Gitarrenmagazine", "Gibson Platine",
+	"augustine", "gitarrenplektren", "e-gitarrensaiten", "gitarrenständer", "4x12", "Peavey Envoy", "Stagg", "Talkbox", "WASHBURN", "EL 84", "12 AX7", "E Gitarren Saiten", "HarleyBenton", "Tremolo Bar", "Amp Stand",
+	"LEDERGITARRENGURT", "Warehouse", "EL34", "ECC83", "Samick", "ROCKTILE", "Vypyr", "MG30FX", "RP350", "Dimavery", "MG30CFX", "Wandhalterung", "DanElectro", "Pedaltrain", "Jensen", "Vyphyr", "Chevy ", "Pickup Kappen", "Spring Set",
+	"AVT100", "Voodoo Lab", "EastCoast", "Hohner", "Leyanda", "zoom", "G212", "Bugera", "MG30R", "FM65DSP", "Morley", "Neutrik", "Ibanez GIO", "Harley Benton", "Tenson", "Kotec", "Triplex", "Pickup Cover", "Saitenhalter",
+	"Cap Kondensator", "Crate", "Henriksen", "MG30GFX", "MG101GFX", "Marshall MG", "Dean", "Warlock", "Schertler", "Cigar Box", "Carlsbro", "Troubadour", "Gitarrensaiten", "VGS ", "Poti-Knöpfe", "Telecaster Pickguard", "Gitarrenkabel",
+	"Greg Bennet", "PEAVEY RAPTOR", "PEAVEY RAGE", "Jolana", "Pickguard Strat", "Lefthand", "String Trees", "String Tree", "PRS Style", "ibz1g", "ROCKTRON", "Stratocaster Pickguard", "Mustang Pickguard", "Gibson Knobs", "lautsprecher",
+	"Roland Cube", "Instrumentenkabel", "Instrumentenkabel", "HSS Pickguard", "Gitarre Mechaniken", "Klinkenkabel", "Cigar-Box", "Speaker Cable", "Pickguard für", "Strat Pickguard", "Relic Pickguard", "Fender Pickguard", "Stativ",
+	"Golden Ton", "C. Giant", "Ledergurt für Gitarre", "linkshänder", "Y-Box", "Vintage Tuner", "Speed Knobs", "Frässchablone", "Laney 412", "Tele Pickguard", "Fender Roc Pro", "Plektren", "Patchkabel", "Control Plate", "Rahmen", "E-Gitarren Saiten",
+	"Einzelsaite", "Gitarren Halter", "Gitarre Haken", "Plektron"
 ]))
 
 def filterParsedListing(listing):

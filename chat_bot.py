@@ -41,29 +41,29 @@ async def main():
 	bot = telegram.Bot(token=token)
 	# application = ApplicationBuilder().token(token).build()
 
-	async def send_msgs_to_client(messages, send_to_sergei = False):
+	async def send_msgs_to_client(messages, send_to_sergei = False, send_to_dm = True):
 		for msg in messages:
 			sleep(randint(300,1000)/1000)
-			try:
-				await bot.send_message(chat_id=chat_id, text=msg)
-			except BaseException as e:
-				print("Error sending msg to Telegram")
-				print(e)
-				continue
+			if send_to_dm:
+				try:
+					await bot.send_message(chat_id=chat_id, text=msg)
+				except BaseException as e:
+					print("Error sending msg to Telegram")
+					print(e)
 			if send_to_sergei:
 				try:
 					await bot.send_message(chat_id=chat_id_sergei, text=msg)
 				except BaseException as e:
 					print("Error sending msg to Sergei")
 					print(e)
-					continue
 		
-	async def send_image_to_client(imgUrl, send_to_sergei = False):
-		try:
-			await bot.send_photo(chat_id=chat_id, photo=imgUrl)
-		except BaseException as e:
-			print("Error sending photo to Telegram")
-			print(e)
+	async def send_image_to_client(imgUrl, send_to_sergei = False, send_to_dm = True):
+		if send_to_dm:
+			try:
+				await bot.send_photo(chat_id=chat_id, photo=imgUrl)
+			except BaseException as e:
+				print("Error sending photo to Telegram")
+				print(e)
 		if send_to_sergei:
 			try:
 				await bot.send_photo(chat_id=chat_id_sergei, photo=imgUrl)
@@ -100,12 +100,12 @@ async def main():
 				ten_min_count = 1
 			else: ten_min_count = ten_min_count - 1
 
-			try:
-				await parseEmbassy(driver, send_msgs_to_client, send_image_to_client)
-			except BaseException as e:
-				print("Error parsing embassy")
-				await send_msgs_to_client(["Error parsing embassy"])
-				print(e)
+			# try:
+			# 	await parseEmbassy(driver, send_msgs_to_client, send_image_to_client)
+			# except BaseException as e:
+			# 	print("Error parsing embassy")
+			# 	await send_msgs_to_client(["Error parsing embassy"])
+			# 	print(e)
 		except BaseException as e:
 			print("Error getting firefox driver")
 			print(e)

@@ -37,10 +37,10 @@ async def main(providedDriver = None, callbackFn = None, sendPhotoFn = None):
 	if (len(error_element) == 0):
 		print("NEW SLOTS IN AUSTRIAN EMBASSY")
 		if isinstance(callbackFn, types.FunctionType):
-			await callbackFn(["!!! IMPORTANT !!!: NEW SLOTS IN AUSTRIAN EMBASSY"], True)
+			await callbackFn(["!!! IMPORTANT !!!: NEW SLOTS IN AUSTRIAN EMBASSY"], True, False)
 			driver.save_screenshot('embassy_test.png')
 			if isinstance(sendPhotoFn, types.FunctionType):
-				await sendPhotoFn('embassy_test.png', True)
+				await sendPhotoFn('embassy_test.png', True, False)
 	else:
 		print("NO SLOTS IN AUSTRIAN EMBASSY")
 		# if isinstance(callbackFn, types.FunctionType):
