@@ -24,7 +24,7 @@ async def getListings(callbackFn = None):
 	logging.info("Get following items")
 	url = build_url('https://api.reverb.com', 'api/my/follows', {})
 
-	response = requests.get(url, headers={"Authorization": f"Bearer {reverb_token}"})
+	response = requests.get(url, headers={"Authorization": f"Bearer {reverb_token}", "Accept-Version": 3.0})
 	try:
 		response_data = response.json()
 	except BaseException as e:

@@ -3,3 +3,4 @@ results*.csv
 *.log
 __pycache__
 .vscode
+geckodriver

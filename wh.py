@@ -14,7 +14,7 @@ import locale
 
 locale.setlocale(locale.LC_ALL, 'en_US.UTF-8')
 
-max_price = 2000
+max_price = 2500
 blacklisted_keywords = list(map(str.lower, [
 	"Gitarrengurte", "Tremolo Abdeckung","Gitarrengurt", "Gitarren Gurt", "Leergehäuse", "Gitarrenhalter", "Akustikverstärker", "Precision Bass", "Schlagbrett", "Plektrum", "Fußschalter", "Gitarrenmagazine", "Gibson Platine",
 	"augustine", "gitarrenplektren", "e-gitarrensaiten", "gitarrenständer", "4x12", "Peavey Envoy", "Stagg", "Talkbox", "WASHBURN", "EL 84", "12 AX7", "E Gitarren Saiten", "HarleyBenton", "Tremolo Bar", "Amp Stand",
@@ -24,7 +24,7 @@ blacklisted_keywords = list(map(str.lower, [
 	"Greg Bennet", "PEAVEY RAPTOR", "PEAVEY RAGE", "Jolana", "Pickguard Strat", "Lefthand", "String Trees", "String Tree", "PRS Style", "ibz1g", "ROCKTRON", "Stratocaster Pickguard", "Mustang Pickguard", "Gibson Knobs", "lautsprecher",
 	"Roland Cube", "Instrumentenkabel", "Instrumentenkabel", "HSS Pickguard", "Gitarre Mechaniken", "Klinkenkabel", "Cigar-Box", "Speaker Cable", "Pickguard für", "Strat Pickguard", "Relic Pickguard", "Fender Pickguard", "Stativ",
 	"Golden Ton", "C. Giant", "Ledergurt für Gitarre", "linkshänder", "Y-Box", "Vintage Tuner", "Speed Knobs", "Frässchablone", "Laney 412", "Tele Pickguard", "Fender Roc Pro", "Plektren", "Patchkabel", "Control Plate", "Rahmen", "E-Gitarren Saiten",
-	"Einzelsaite", "Gitarren Halter", "Gitarre Haken", "Plektron"
+	"Einzelsaite", "Gitarren Halter", "Gitarre Haken", "Plektron", "E-Gitarre Noten"
 ]))
 
 def filterParsedListing(listing):
