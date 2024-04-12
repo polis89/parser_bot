@@ -26,12 +26,14 @@ async def getListings(callbackFn = None):
 
 	response = requests.get(url, headers={"Authorization": f"Bearer {reverb_token}", "Accept-Version": 3.0})
 	try:
+		logging.info("send reverb request")
 		response_data = response.json()
+		logging.info("reverb before follows")
+		topics = response_data["follows"]
 	except BaseException as e:
 		print("Error fetching reverb following searches")
 		print(e)
 		return
-	topics = response_data["follows"]
 
 	logging.info("Start parsing Reverb")
 	for topic in topics:

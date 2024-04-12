@@ -109,8 +109,11 @@ async def main():
 		except BaseException as e:
 			print("Error getting firefox driver")
 			print(e)
-		
-		driver.quit()
+
+		try:
+			driver.quit()
+		except NameError:
+			print("driver is not initialized")
 		# sleep(randint(60*5,60*10))
 		sleep(randint(60*4,60*6))
 
